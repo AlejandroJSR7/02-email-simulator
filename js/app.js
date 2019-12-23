@@ -3,6 +3,8 @@ const email = document.getElementById('email');
 const subject = document.getElementById('asunto');
 const message = document.getElementById('email');
 const btnSubject = document.getElementById('enviar');
+const formEmail = document.getElementById('enviar-mail');
+const resetBtn = document.getElementById('resetBtn');
 
 // Listeners
 eventListeners();
@@ -11,6 +13,8 @@ function eventListeners() {
   email.addEventListener('blur', checkField);
   subject.addEventListener('blur', checkField);
   message.addEventListener('blur', checkField);
+  formEmail.addEventListener('submit', sendEmail);
+  resetBtn.addEventListener('click', resetForm);
 }
 
 // Functions
@@ -19,7 +23,7 @@ function startApp() {
 }
 function checkField() {
   validarLongitud(this);
-  if (this.type = 'email') {
+  if (this.type == 'email') {
     validateEmail(this);
   }
   let errores = document.querySelectorAll('.error');
@@ -47,4 +51,29 @@ function validateEmail(email) {
     email.style.borderBottomColor = 'red';
     email.classList.add('error');
   }
+}
+function sendEmail(e) {
+  e.preventDefault();
+
+  const spinnerGif = document.querySelector('#spinner');
+  spinnerGif.style.display = 'block';
+
+  const sending = document.createElement('img');
+  sending.src = 'img/mail.gif';
+  sending.style.display = 'block';
+
+  setTimeout(() => {
+    spinnerGif.style.display = 'none';
+    document.getElementById('loaders').appendChild(sending);
+    setTimeout(() => {
+      sending.style.display = 'none';
+      formEmail.reset();
+    }, 5000);
+  }, 3000);
+
+  console.log('Mail Enviado');
+}
+function resetForm(e) {
+  e.preventDefault();
+  formEmail.reset();
 }
